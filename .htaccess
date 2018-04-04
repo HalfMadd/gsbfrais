@@ -1,0 +1,10 @@
+	
+DirectoryIndex cAccueil.php
+
+RewriteEngine On
+RewriteRule	^connexion$	cSeConnecter.php	[L]	
+RewriteRule	^accueil$	cAccueil.php	[L]	
+
+# HTID:4516674: DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES BELOW
+php_value display_errors 1
+# DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES ABOVE HTID:4516674:
