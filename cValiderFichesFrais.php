@@ -1,9 +1,5 @@
  <?php
-/**
- * Page d'accueil de l'application web AppliFrais
- * @package default
- * @todo  RAS
- */
+//Start
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
 
@@ -15,12 +11,14 @@
     $idUser = obtenirIdUserConnecte() ;
     $lgUser = obtenirDetailVisiteur($idConnexion, $idUser);
     $admin = $lgUser['admin'];
+    //si non comptable,retour à l'accueil
       if( $admin == 0){
         header("Location:cAccueil.php");
       }
   }
   require($repInclude . "_entete.inc.php");
   
+  //acquisition des données
   $tabQteEltsForfait=lireDonneePost("txtEltsForfait", "");
   $libelleHF = lireDonneePost("libelleHF", "");
   $moisSaisi=lireDonnee("lstMois", "");
@@ -29,6 +27,7 @@
   $etapeSaisie=lireDonneePost("etapeSaisie","");
   $etapeGet =lireDonnee("etapeGet","");
   $idLigneHF = lireDonnee("idLigneHF", "");
+  
   if ($etape != "demanderConsult" && $etape != "validerConsult" && $etapeSaisie != "Corriger Saisie" && $etapeSaisie != "Valider Fiche" && $etapeGet != "validerSuppressionLigneHF") {
       // si autre valeur, on considère que c'est le début du traitement
       $etape = "demanderConsult";
@@ -68,7 +67,9 @@ else {
             modifierEltsForfait($idConnexion, $moisSaisi, $utilSaisi ,$tabQteEltsForfait);
         }
         if($etapeSaisie == "Valider Fiche"){
+            //mise à jour si modification
             modifierEltsForfait($idConnexion, $moisSaisi, $utilSaisi ,$tabQteEltsForfait);
+            //validation
             modifierEtatFicheFrais($idConnexion, $moisSaisi, $utilSaisi, 'VA');
         }
     }
@@ -78,7 +79,7 @@ else {
 }
 
         //récupération des données sur la fiche de frais demandée
-          $tabFicheFrais = obtenirDetailFicheFrais($idConnexion, $moisSaisi, $utilSaisi);
+        $tabFicheFrais = obtenirDetailFicheFrais($idConnexion, $moisSaisi, $utilSaisi);
           
 // boolean selon Fiche
 if($tabFicheFrais['idEtat'] == "CR" || $tabFicheFrais['idEtat'] == "CL" ){          
@@ -96,6 +97,7 @@ if($tabFicheFrais['idEtat'] == "CR" || $tabFicheFrais['idEtat'] == "CL" ){
     <p style = "text-align:center">
       <select id="lstUtil" name="lstUtil" title="Sélectionnez le nom souhaité pour la fiche de frais">
           <?php
+          //obtenir la liste des visiteurs
               $req = obtenirReqUsers();
               $idJeuUser = mysqli_query($idConnexion,$req);
               $lgUser = mysqli_fetch_assoc($idJeuUser);
