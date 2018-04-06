@@ -1,9 +1,5 @@
  <?php
-/**
- * Page d'accueil de l'application web AppliFrais
- * @package default
- * @todo  RAS
- */
+//start
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
 
@@ -20,7 +16,7 @@
       }
   }
   require($repInclude . "_entete.inc.php");
-  
+  //récupération des éléments
   $tabQteEltsForfait=lireDonneePost("txtEltsForfait", "");
   $moisSaisi= lireDonnee("lstMois","");
   $utilSaisi=lireDonneePost("lstUtil", "");
@@ -44,6 +40,7 @@ if ($etape == "validerSuivi") { // l'utilisateur valide ses nouvelles données
 }
 
 if ($etape =="Mettre en paiement") {
+    //changement d'état
     $req=modifierEtatFicheFrais($idConnexion, $moisSaisi, $utilSaisi, 'RB');
 }
 
@@ -62,6 +59,7 @@ if ($etape =="Mettre en paiement") {
             $req = obtenirReqUsersSuivi();
             $idJeuUser = mysqli_query($idConnexion,$req);
             if(mysqli_num_rows($idJeuUser) != 0){
+                //si fiche 'VA' existe, alors
             ?>
   <form action="" method="post">
   <div class="corpsForm">
@@ -119,7 +117,9 @@ if ($etape =="Mettre en paiement") {
 
   </form>
         <?php }else{ ?>
+  
         <h2>Aucune fiche à mettre en remboursement</h2>
+        
         <?php } ?>
   <?php
 
@@ -130,6 +130,7 @@ if ($etape =="Mettre en paiement") {
     }
     
     if ($etape == "validerSuivi" ) {
+        //si erreur lors du traitement ou autre comptable a déjà remboursé en même temps
         if($tabFicheFrais['idEtat']!='VA'){
             ajouterErreur($tabErreurs, 'Cette fiche de frais n\'est pas validée' );
         }
